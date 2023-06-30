@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "connection/mongoDB.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "connection/mongoDB.js", "pages/api/task.js"],
   "exclude": ["node_modules"]
 }
