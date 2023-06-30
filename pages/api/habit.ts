@@ -16,25 +16,25 @@ export default async function handler(
     switch (req.method) {
 // ---------------------------------------------------------------------------
       case "POST":
-        const { taskName, taskDescription, taskGoal, user_id } = req.body;
+        const { habitName, habitDescription, habitGoal, user_id } = req.body;
 
-        if (!taskName || !taskGoal || !user_id) {
+        if (!habitName || !habitGoal || !user_id) {
           return res.status(406).json({ msg: `data can't be empty!` });
         }
 
         await prisma.$connect();
-        const data = { user_id, taskName, taskDescription, taskGoal };
+        const data = { user_id, habitName, habitDescription, habitGoal };
 
-        const result = await prisma.task.create({
+        const result = await prisma.habit.create({
           data: data,
         });
 
-        return res.status(200).json({ msg: "task created!" });
+        return res.status(200).json({ msg: "habit added!" });
         
 // ------------------------------------------------------------------------
       case 'GET':
         const { userId } : any = req.query
-        const HabitData: any = await prisma.task.findMany({
+        const HabitData: any = await prisma.habit.findMany({
           where: { user_id: userId }
         })
         return res.status(200).json(HabitData)

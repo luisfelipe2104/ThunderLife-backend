@@ -23,31 +23,31 @@ model User {
   password String
 }
 
-model Task {
+model Habit {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   user_id String
-  taskName String
-  taskDescription String?
-  taskGoal String
+  habitName String
+  habitDescription String?
+  habitGoal String
 }
 
 model PositiveStreak {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  task_id String
+  habit_id String
   date String
   comment String?
 }
 
 model NegativeStreak {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  task_id String
+  habit_id String
   date String
   comment String?
 }
 
 model PartialStreak {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  task_id String
+  habit_id String
   date String
   comment String?
 }
