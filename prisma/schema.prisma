@@ -31,23 +31,10 @@ model Habit {
   habitGoal String
 }
 
-model PositiveStreak {
+model Streak {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   habit_id String
   date String
   comment String?
-}
-
-model NegativeStreak {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  habit_id String
-  date String
-  comment String?
-}
-
-model PartialStreak {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  habit_id String
-  date String
-  comment String?
+  status String
 }
