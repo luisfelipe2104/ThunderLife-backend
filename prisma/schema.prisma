@@ -34,6 +34,7 @@ model Habit {
 model Streak {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   habit_id String
+  user_id String
   date String
   comment String?
   status String
