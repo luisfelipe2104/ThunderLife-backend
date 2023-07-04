@@ -45,6 +45,7 @@ export default async function handler(
 
         await HabitData.map(async (habit: any) => {
           const streakArray: any = []
+          habit.streak = streakArray
           await StreakData.map((streak: any) => {
             if (habit.id == streak.habit_id) {
               streakArray.push(streak)
