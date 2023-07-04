@@ -56,7 +56,25 @@ export default async function handler(
         return res.status(200).json(HabitData)
 
 // ------------------------------------------------------------------------
+      case 'DELETE':
+        const { habitId } : any = req.query
+        await prisma.habit.delete({
+          where: {
+            id: habitId
+          }
+        })
+
+        await prisma.streak.deleteMany({
+          where: {
+            habit_id: habitId
+          }
+        })
+        
+        res.status(200).json({ msg: 'Habit deleted!' });
+
     }
+    
+// ------------------------------------------------------------------------
   } catch (err: any) {
     console.log(err);
     res.status(400).json({ msg: err.message });
