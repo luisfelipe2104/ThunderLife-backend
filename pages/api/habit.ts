@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { log } from "console";
 const prisma = new PrismaClient();
 type Data = {
   msg: string;
@@ -36,6 +37,20 @@ export default async function handler(
         const { userId } : any = req.query
         const HabitData: any = await prisma.habit.findMany({
           where: { user_id: userId }
+        })
+
+        const StreakData: any = await prisma.streak.findMany({
+          where: { user_id: userId}
+        })
+
+        await HabitData.map(async (habit: any) => {
+          const streakArray: any = []
+          await StreakData.map((streak: any) => {
+            if (habit.id == streak.habit_id) {
+              streakArray.push(streak)
+              habit.streak = streakArray
+            }
+          })
         })
         return res.status(200).json(HabitData)
 
