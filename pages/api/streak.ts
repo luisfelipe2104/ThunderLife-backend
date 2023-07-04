@@ -28,7 +28,8 @@ export default async function handler(
         const streakExists: any = await prisma.streak.findFirst({
             where: {
                 habit_id: habit_id,
-                user_id: user_id
+                user_id: user_id,
+                date: date
             }
         })
 
@@ -50,8 +51,7 @@ export default async function handler(
 // ------------------------------------------------------------------------
       case 'GET':
         // const { userId } : any = req.query
-        const StreakData: any = await prisma.streak.findMany({
-        })
+        const StreakData: any = await prisma.streak.findMany({})
         return res.status(200).json(StreakData)
 
 // ------------------------------------------------------------------------
