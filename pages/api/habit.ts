@@ -1,7 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import { log } from "console";
 const prisma = new PrismaClient();
 type Data = {
   msg: string;
@@ -40,7 +39,7 @@ export default async function handler(
         })
 
         const StreakData: any = await prisma.streak.findMany({
-          where: { user_id: userId}
+          where: { user_id: userId }
         })
 
         await HabitData.map(async (habit: any) => {
@@ -52,6 +51,31 @@ export default async function handler(
               habit.streak = streakArray
             }
           })
+        })
+
+        await HabitData.map(async (habit: any) => {
+          const streak = habit.streak
+          await streak.sort((a: any, b: any) => {
+            const date1: any = new Date(a.date)
+            const date2: any = new Date(b.date)
+            return date1 - date2
+          })
+
+          let streakCouter: number = 0
+          
+          for (let i=0; i<streak.length; i++) {
+            if (streak[i].status === 'positive') {
+              streakCouter ++
+            } else if (streak[i].status === 'negative') {
+              streakCouter = 0
+            } else if (streak[i].status === 'partial') {
+
+            }
+          }
+
+          habit.streakCounter = streakCouter
+          console.log(habit.habitName);
+          console.log(streakCouter);
         })
         return res.status(200).json(HabitData)
 
