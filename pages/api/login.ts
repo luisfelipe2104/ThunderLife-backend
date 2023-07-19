@@ -3,9 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
-type Data = {
-  msg: string;
-};
+type Data = any
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,37 +15,31 @@ export default async function handler(
     switch (req.method) {
 // ---------------------------------------------------------------------------
       case "POST":
-        const { name, email, password, confirmPassword } = req.body;
+        const { email, password } = req.body;
 
-        if (!name || !email || !password || !confirmPassword) {
+        if (!email || !password) {
           return res.status(400).json({ msg: "Fill all the fields!" });
         }
         
-        if (password.length < 6) {
-          return res.status(400).json({ msg: "Password must be at least 7 characteres!" })
-        }
 
-        if (password !== confirmPassword) {
-          return res.status(400).json({ msg: "Passwords aren't the same!" })
-        }
-
-        const emailExists: any = await prisma.user.findFirst({
+        const user: any = await prisma.user.findFirst({
           where: {
             email: email 
           }
         })
 
-        if (emailExists) {
-          return res.status(400).json({ msg: "Email is already being used!" })
+        if (user) {
+            const userPassword = user.password
+            const isPasswordCorrect = bcrypt.compareSync(password, userPassword);
+            
+            if (isPasswordCorrect) {
+                return res.status(200).json({ msg: "User logged in!", user: user })
+            } else {
+                return res.status(400).json({ msg: "Password is incorrect!" })
+            }
+        } else {
+            return res.status(400).json({ msg: "User doesn't exists, please register first!" });
         }
-        
-        const salt = bcrypt.genSaltSync(3);
-        const newPassword = bcrypt.hashSync(password, salt);
-        const data = { name, email, password: newPassword }
-
-        await prisma.user.create({ data: data })
-
-        return res.status(201).json({ msg: "Account created!" });
         
 // ------------------------------------------------------------------------
       case 'GET':
