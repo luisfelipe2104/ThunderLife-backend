@@ -39,3 +39,13 @@ model Streak {
   comment String?
   status String
 }
+
+model ToDo {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  user_id String
+  toDoName String
+  status String
+  scheduledHour String
+  doneHour String
+  toDoDescription String
+}
