@@ -34,8 +34,12 @@ export default async function handler(
         
 // ------------------------------------------------------------------------
       case 'GET':
-        // const { userId } : any = req.query
-        const ToDoData: any = await prisma.toDo.findMany({})
+        const { userId } : any = req.query
+        const ToDoData: any = await prisma.toDo.findMany({
+          where: {
+            user_id: userId,
+          }
+        })
         return res.status(200).json(ToDoData)
 
 // ------------------------------------------------------------------------
