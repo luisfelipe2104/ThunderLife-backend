@@ -16,13 +16,15 @@ export default async function handler(
     switch (req.method) {
 // ---------------------------------------------------------------------------
       case "POST":
-        const { user_id, toDoName, status, scheduledHour, doneHour, toDoDescription } = req.body;
+        const { user_id, toDoName, scheduledHour, toDoDescription } = req.body;
 
         if (!user_id || !toDoName || !scheduledHour) {
           return res.status(406).json({ msg: `data can't be empty!` });
         }
 
         await prisma.$connect();
+        const status = 'notDone'
+        const doneHour = 'not done'
         const data = { user_id, toDoName, status, scheduledHour, doneHour, toDoDescription };
 
 
