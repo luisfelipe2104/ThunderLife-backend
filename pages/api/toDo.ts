@@ -45,6 +45,52 @@ export default async function handler(
         return res.status(200).json(ToDoData)
 
 // ------------------------------------------------------------------------
+      case 'PATCH':
+        const { todo_id } : any = req.query
+        const ToDo: any = await prisma.toDo.findFirst({
+          where: {
+            id: todo_id,
+          }
+        })
+
+        const todo_status = ToDo.status
+
+        if (todo_status === 'done') {
+          await prisma.toDo.update({
+            where: {
+              id: todo_id
+            },
+            data: {
+              status: 'notDone'
+            }
+          })
+        }
+
+        else if (todo_status === 'notDone') {
+          await prisma.toDo.update({
+            where: {
+              id: todo_id
+            },
+            data: {
+              status: 'done'
+            }
+          })
+        }
+
+        // else {
+        //   await prisma.toDo.update({
+        //     where: {
+        //       id: todo_id
+        //     },
+        //     data: {
+        //       status: 'notDone'
+        //     }
+        //   })
+        // }
+
+        return res.status(200).json({msg: "todo status updated!"})
+
+// ------------------------------------------------------------------------
     }
   } catch (err: any) {
     console.log(err);
