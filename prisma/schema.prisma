@@ -49,3 +49,14 @@ model ToDo {
   doneHour String
   toDoDescription String
 }
+
+model Note {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  user_id String
+  title String
+  text String
+  color String
+  edited String
+  createdAt String
+  updatedAt String
+}
