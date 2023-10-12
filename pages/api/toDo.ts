@@ -42,7 +42,18 @@ export default async function handler(
             user_id: userId,
           }
         })
-        return res.status(200).json(ToDoData)
+        const finalData : any = []
+        await ToDoData.map((t: any) => {
+          if (t.status === 'notDone') {
+            finalData.push(t)
+          }
+        })
+        await ToDoData.map((t: any) => {
+          if (t.status === 'done') {
+            finalData.push(t)
+          }
+        })
+        return res.status(200).json(finalData)
 
 // ------------------------------------------------------------------------
       case 'DELETE':
@@ -86,17 +97,6 @@ export default async function handler(
             }
           })
         }
-
-        // else {
-        //   await prisma.toDo.update({
-        //     where: {
-        //       id: todo_id
-        //     },
-        //     data: {
-        //       status: 'notDone'
-        //     }
-        //   })
-        // }
 
         return res.status(200).json({msg: "todo status updated!"})
 
