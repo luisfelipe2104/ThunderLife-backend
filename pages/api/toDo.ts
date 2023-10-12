@@ -45,6 +45,16 @@ export default async function handler(
         return res.status(200).json(ToDoData)
 
 // ------------------------------------------------------------------------
+      case 'DELETE':
+        const { todoID } : any = req.query
+        await prisma.toDo.delete({
+          where: {
+            id: todoID,
+          }
+        })
+        return res.status(200).json({msg : "Task deleted!"})
+
+// ------------------------------------------------------------------------
       case 'PATCH':
         const { todo_id } : any = req.query
         const ToDo: any = await prisma.toDo.findFirst({
